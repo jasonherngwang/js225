@@ -12,32 +12,27 @@ function createStudent(name, year) {
     addCourse(course) {
       this.courses.push(course);
     },
-    findCourseIndex(code) {
-      return this.courses.findIndex(course => course.code === code);
-    },
     addNote(code, note) {
-      let courseIndex = this.findCourseIndex(code);
-      if (courseIndex === -1) return;
-      let course = this.courses[courseIndex]
-      
-      if (course.notes === undefined) {
-        course.notes = [note];
-      } else {
-        course.notes.push(note);
+      const course = this.courses.filter((course) => course.code === code)[0];
+
+      if (course) {
+        if (course.notes) {
+          course.notes.push(note);
+        } else {
+          course.notes = [note];
+        }
       }
     },
     viewNotes() {
-      this.courses.forEach(course => {
-        if (course.notes !== undefined) {
+      this.courses.forEach((course) => {
+        if (course.notes) {
           console.log(`${course.name}: ${course.notes.join('; ')}`);
         }
-      })
+      });
     },
     updateNote(code, note) {
-      let courseIndex = this.findCourseIndex(code);
-      if (courseIndex === -1) return;
-      let course = this.courses[courseIndex]
-      course.notes = [note];
+      const course = this.courses.filter((course) => course.code === code)[0];
+      if (course) course.notes = [note];
     },
   };
 }
