@@ -51,17 +51,19 @@ let c = {
 };
 
 function add() {
+  // Accesses `b` from lexical scope.
+  // `this.a` depends on FEC.
   return this.a + b;
 }
 
 c.add = add;
 
 // Function call. Implicit FEC is `window`.
-// this.a is 10, b is 10. Logs 20.
+// this.a is window.a which is 10, b is 10. Logs 20.
 // If line 1 was `let a`, `window.a` doesn't exist, so `undefined + 10` = NaN
 console.log(add());
 
-// Method call. Explicity FEC is object `c`.
+// Method call. Explicit FEC is object `c`.
 // c.a is -10, b is not a local variable of `add`; searches lexical scope and
 // finds it as a global var, with value of 10. Logs 0.
 console.log(c.add());

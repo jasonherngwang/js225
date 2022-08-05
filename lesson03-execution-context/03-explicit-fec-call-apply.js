@@ -1,3 +1,5 @@
+// Explicit FEC
+
 a = 1; // property of global object
 
 let object = {
@@ -6,10 +8,10 @@ let object = {
 };
 
 function foo() {
-  return this.a; // implicit FEC is global object
+  return this.a;
 }
 
-console.log(foo()); // 1 (context is global object)
+console.log(foo()); // 1 (implicit FEC is global object)
 console.log(foo.call(object)); // "hello" (explicitly set FEC as `object`)
 
 let strings = {
@@ -25,7 +27,7 @@ let numbers = {
   b: 2,
 };
 
-console.log(strings.foo()); // 'helloworld' (implicity FEC is calling object `strings`)
+console.log(strings.foo()); // 'helloworld' (implicit FEC is calling object `strings`)
 console.log(strings.foo.call(numbers)); // 3 (explicitly set FEC as `numbers`)
 
 let iPad = {
