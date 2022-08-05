@@ -37,6 +37,7 @@ function createProduct(id, name, stock, price) {
     },
   };
 }
+
 let scissors = createProduct(0, 'Scissors', 8, 10);
 let cordlessDrill = createProduct(1, 'Cordless Drill', 15, 45);
 let cordedDrill = createProduct(2, 'Corded Drill', 20, 30);

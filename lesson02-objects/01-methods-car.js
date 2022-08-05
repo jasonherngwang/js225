@@ -1,21 +1,24 @@
 let car = {
+  // Object properties
   fuel: 10,
   running: false,
+  // Object methods
+  // `this` references calling object (explicit receiver)
   stop() {
     if (this.running) {
-      console.log("Stopping");
+      console.log('Stopping');
       this.running = false;
     } else {
-      console.log("Already off");
+      console.log('Already off');
     }
   },
   start() {
     if (this.fuel === 0) {
-      console.log("Out of fuel");
+      console.log('Out of fuel');
     } else if (this.running === true) {
-      console.log("Already running");
+      console.log('Already running');
     } else {
-      console.log("Starting");
+      console.log('Starting');
       this.running = true;
     }
   },
@@ -25,13 +28,15 @@ let car = {
     let fuelConsumed = Math.min(this.fuel, fuelRequired);
     let actualDistanceTraveled = fuelConsumed * DISTANCE_PER_FUEL;
     if (!this.running) {
-      console.log("Need to start car first");
+      console.log('Need to start car first');
     } else if (this.fuel === 0) {
-      console.log("No fuel");
+      console.log('No fuel');
     } else {
       this.fuel -= fuelConsumed;
       console.log(
-        `Drove ${actualDistanceTraveled} miles, consuming ${fuelConsumed} fuel, ${this.fuel} gal remaining`
+        `Drove ${actualDistanceTraveled} miles, consuming ${fuelConsumed} fuel, ${this.fuel.toFixed(
+          2
+        )} gal remaining`
       );
     }
   },

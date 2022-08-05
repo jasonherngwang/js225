@@ -3,6 +3,8 @@
 // 1
 // Strings are immutable primitives.
 // JS is pass-by-value for primitives; a copy is made when passing.
+// Within the function the local variable references a different string than
+// the global variable initialized on the first line.
 let message = 'Hello from the global scope!';
 
 function func(message) {

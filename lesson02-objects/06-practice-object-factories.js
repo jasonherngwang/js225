@@ -35,7 +35,7 @@ function makeCountry(name, continent, visited = false) {
         ' is located in ' +
         this.continent +
         '. I ' +
-        (visited ? 'have' : "haven't") +
+        (this.visited ? 'have' : "haven't") +
         ' visited ' +
         this.name
       );
@@ -53,3 +53,6 @@ let southAfrica = makeCountry('The Republic of South Africa', 'Africa');
 [chile, canada, southAfrica].forEach((country) =>
   console.log(country.getDescription())
 );
+
+canada.visitCountry();
+console.log(canada.getDescription());

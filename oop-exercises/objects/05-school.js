@@ -39,6 +39,7 @@ function createStudent(name, year) {
 
 let school = {
   students: [],
+  // Returns a student object, which can later be passed as an argument.
   addStudent(name, year) {
     if (['1st', '2nd', '3rd', '4th', '5th'].includes(year)) {
       let newStudent = createStudent(name, year);

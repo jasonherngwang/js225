@@ -6,7 +6,7 @@ Expected output:
 
 Must use `this` to reference properties of the parent object. Otherwise
 `morning`, `afternoon`, and `evening` will be treated as local variables which
-are undefined.
+are undefined and will raise a ReferenceError.
 
 Don't need to use `this.name` because `name` is a local var inside
 `createGreeter`, and included in closure of function `greet`.

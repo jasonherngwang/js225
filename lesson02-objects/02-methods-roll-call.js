@@ -5,10 +5,10 @@ let me = {
   firstName: 'Jason',
 };
 
-// Add method using dot notation
+// Add property using dot notation
 me.lastName = 'Wang';
 
-// Create others
+// Create other objects
 let person1 = {
   index: 1,
   firstName: 'A',
@@ -23,13 +23,17 @@ let person2 = {
 
 // people Object
 let people = {
+  // Objects stored inside other objects
   collection: [me, person1, person2],
+  // Methods
+  // We will use `people` as the explicit receiver, so it is referenced by
+  // `this`.
   generateIndex() {
     return this.collection[this.collection.length - 1].index + 1;
   },
   add(person) {
     if (this.isInvalidPerson(person)) return;
-
+    // Merging objects together
     Object.assign(person, { index: this.generateIndex() });
     this.collection.push(person);
   },
@@ -74,11 +78,11 @@ let people = {
     let index = this.getIndex(person);
     if (index !== -1) this.collection.splice(index, 1);
   },
-  fullName(person) {
+  logFullName(person) {
     console.log(person.index, person.firstName + ' ' + person.lastName);
   },
   rollCall(collection) {
-    this.collection.forEach(this.fullName);
+    this.collection.forEach(this.logFullName);
   },
   logThis() {
     console.log(this);
