@@ -82,7 +82,7 @@ let bar2 = {
   },
 };
 
-// Retrieves a = 1 and b = 2 from explicity context `foo2`
+// Retrieves a = 1 and b = 2 from explicit context `foo2`
 // Logs 3
 console.log(bar2.add.call(foo2));
 
@@ -95,7 +95,7 @@ let fruitsObj = {
 function outputList() {
   console.log(this.title + ':');
 
-  console.log(arguments);
+  // console.log(arguments);
   // Using call
   // [Arguments] {
   //   '0': [ 'Apple', 'Banana', 'Grapefruit', 'Pineapple', 'Orange' ]
@@ -118,4 +118,9 @@ function outputList() {
 }
 
 // invoke outputList here
+outputList.call(fruitsObj, ...fruitsObj.list);
 outputList.apply(fruitsObj, fruitsObj.list);
+
+// 9
+// arguments is an Array-like object that lacks standard Array functions such
+// as slice and forEach. Therefore we convert it to an Array first.

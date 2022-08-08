@@ -1,4 +1,6 @@
 // 1
+// startNum is in the closure of the returned function. It is accessed every
+// time the function is invoked.
 function makeCounterLogger(startNum) {
   return (stopNum) => {
     let currentNum = startNum;
@@ -32,7 +34,10 @@ countlog(5);
 
 // 2
 function makeList() {
+  // todos is private data in the returned function's closure, only accessible
+  // by the function.
   let todos = [];
+
   return function (todo) {
     if (todo === undefined) {
       if (todos.length === 0) {

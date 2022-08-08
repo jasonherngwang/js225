@@ -1,6 +1,6 @@
 // 2
 // Function invocation.
-// `this` references global object (loose), `undefined` (strict);
+// `this` references global object (non-strict), `undefined` (strict);
 
 // 'use strict';
 
@@ -11,7 +11,7 @@ function whatIsMyContext() {
 whatIsMyContext();
 
 // 3
-// Function calls set EC to implicit global context.
+// Function calls set FEC to implicit global context.
 function foo() {
   function bar() {
     function baz() {
@@ -58,7 +58,7 @@ let obj6 = {
 };
 
 // Method invocation; `this` is `obj6`
-// `bar` is called with `obj6` as EC.
+// `bar` is called with `obj6` as implicit FEC.
 // Within `bar`, `this.a6` references `obj6.a6` => 2
 obj6.foo(); // 2
 

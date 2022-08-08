@@ -34,6 +34,7 @@ let greeting = makeGreeting();
 // is the object eligible for GC here?
 // No. `foo` is referenced by the closure associated with the returned function.
 // { greeting: 'hello' } cannot be GC'd until the closure is dereferenced.
+
 // more code
 
 // 4

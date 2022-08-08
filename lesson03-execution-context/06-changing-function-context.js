@@ -20,11 +20,18 @@ console.log(average.apply(temperatures));
 let averageTemperature = average.bind(temperatures);
 console.log(averageTemperature());
 
-// Assigning an object property to a method
+// Assigning an object property to a method - Arrays are also Objects.
 // Calling the method using an explicit receiver will use the receiver as the
 // execution context.
 temperatures.average = average;
 console.log(temperatures.average());
+
+// Enumerable property names, including `average`.
 console.log(Object.keys(temperatures));
+
+// Enumerable and non-enumerable property names,
+/// including `average` and `length`
 console.log(Object.getOwnPropertyNames(temperatures));
+
+// Indices 0, 1, 2, ... only
 temperatures.forEach((x) => console.log(x));

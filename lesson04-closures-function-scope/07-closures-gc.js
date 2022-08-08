@@ -15,7 +15,7 @@ function run() {
 
 run();
 // Function execution complete. Can GC [2].
-// Cannot GC a = [1, 2] since it is a global variable.
+// Cannot GC a = [1, 2] until program ends, since it is a global variable.
 
 // 2
 // In the following code, when can JavaScript garbage collect the value
@@ -27,7 +27,7 @@ function makeHello(names) {
 }
 
 let helloSteveAndEdie = makeHello(['Steve', 'Edie']);
-// Can GC ["Steve", "Edie"] after makeHello completes execution.
-// names[0] and names[1] references elements of names.
-// There are no persistent references to names.
-// names is NOT in the returned function's closure; its elements are.
+// Can GC ["Steve", "Edie"] after the program ends.
+// Within makeHello, the function references `names`, so `names` is in its
+// closure. This persistent reference prevents the Array from being GC'd until
+// the program ends, and the function associated with that closure is GC'd.

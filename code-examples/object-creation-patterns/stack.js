@@ -7,7 +7,7 @@ Implement a Stack
 - Store elements in an Array
 
 Requirements
-- Instances should have a meaningul prototype
+- Instances should have a meaningful prototype
 - Data is private
 - Behavior located on prototype object
 */

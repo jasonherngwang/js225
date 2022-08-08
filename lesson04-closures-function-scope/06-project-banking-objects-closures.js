@@ -14,13 +14,17 @@
 //   },
 // };
 
+// Factory Object Creation Pattern
+// Each Account object has its own state and copy of all the methods.
+// We use closures to keep Account data private. We create methods to provide a
+// user interface.
 function makeAccount(accountNum) {
-  let number = accountNum;
   let balance = 0;
   let transactions = [];
+
   return {
     number() {
-      return number;
+      return accountNum;
     },
     balance() {
       return balance;
@@ -43,6 +47,7 @@ function makeAccount(accountNum) {
 }
 
 function makeBank() {
+  // Private data
   let accounts = [];
 
   return {

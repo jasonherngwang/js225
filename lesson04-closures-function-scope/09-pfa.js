@@ -11,8 +11,7 @@ greet('good morning', 'Sue');
 // Good morning, Sue!
 
 // 2
-// Use PFA
-
+// Use PFA and a general purpose generator function
 function partial(primary, arg1) {
   return function (arg2) {
     return primary(arg1, arg2);
@@ -23,3 +22,7 @@ const sayHello = partial(greet, 'hello');
 sayHello('Brandon');
 const sayHi = partial(greet, 'hi');
 sayHi('Sarah');
+
+// Using `bind` instead of a generator function
+const saySup = greet.bind(null, 'Sup');
+saySup('Jason');

@@ -1,4 +1,4 @@
-// 1
+// 1, 2, 3
 // Desired output: Christopher Turk is a Surgeon.
 
 let turk = {
@@ -12,23 +12,28 @@ let turk = {
   },
 };
 
+// Original
 // function logReturnVal(func) {
 //   let returnVal = func(); // Function call; context is global object.
 //   console.log(returnVal); // 'undefined undefined is a undefined'
 // }
 
+// Extracting the method removes context.
+// Passing the method also removes context.
+logReturnVal(turk.getDescription, turk); // Christopher Turk is a Surgeon.
+
+// Fix 1: Using `call`
 function logReturnVal(func, context) {
   let returnVal = func.call(context);
   console.log(returnVal);
 }
 
-// Pass method; loses context when extracted from object `turk`.
-logReturnVal(turk.getDescription, turk);
-
+// Fix 2: Using `bind`
 let getTurkDescription = turk.getDescription.bind(turk);
-console.log(getTurkDescription());
+console.log(getTurkDescription()); // Christopher Turk is a Surgeon.
 
-// 4
+// 4-7
+// Desired output:
 // The Elder Scrolls Arena
 // The Elder Scrolls Daggerfall
 // The Elder Scrolls Morrowind
@@ -43,6 +48,7 @@ let TESgames = {
   titles: ['Arena', 'Daggerfall', 'Morrowind', 'Oblivion', 'Skyrim'],
   seriesTitle: 'The Elder Scrolls',
   listGames() {
+    // Callback loses surrounding context
     this.titles.forEach(function (title) {
       console.log(this.seriesTitle + ' ' + title);
     });
@@ -50,8 +56,13 @@ let TESgames = {
 };
 
 TESgames.listGames();
+// undefined Arena
+// undefined Daggerfall
+// undefined Morrowind
+// undefined Oblivion
+// undefined Skyrim
 
-// Using arrow function
+// Fix 1: Using arrow function
 let TESgames2 = {
   titles: ['Arena', 'Daggerfall', 'Morrowind', 'Oblivion', 'Skyrim'],
   seriesTitle: 'The Elder Scrolls',
@@ -64,7 +75,7 @@ let TESgames2 = {
 
 TESgames2.listGames();
 
-// Using `let self = this`
+// Fix 2: let self = this
 let TESgames3 = {
   titles: ['Arena', 'Daggerfall', 'Morrowind', 'Oblivion', 'Skyrim'],
   seriesTitle: 'The Elder Scrolls',
@@ -78,7 +89,7 @@ let TESgames3 = {
 
 TESgames3.listGames();
 
-// Using forEach's thisArg
+// Fix 3: Using forEach's thisArg
 let TESgames4 = {
   titles: ['Arena', 'Daggerfall', 'Morrowind', 'Oblivion', 'Skyrim'],
   seriesTitle: 'The Elder Scrolls',
@@ -91,18 +102,37 @@ let TESgames4 = {
 
 TESgames4.listGames();
 
+// Fix 4: Using `bind`
+let TESgames5 = {
+  titles: ['Arena', 'Daggerfall', 'Morrowind', 'Oblivion', 'Skyrim'],
+  seriesTitle: 'The Elder Scrolls',
+  listGames() {
+    this.titles.forEach(
+      function (title) {
+        console.log(this.seriesTitle + ' ' + title);
+      }.bind(this)
+    );
+  },
+};
+
+TESgames5.listGames();
+
 // 8
 // Internal function loses context. `this.a` references property of global
 // object, `window.a`.
+// Each invocation performs: window.a = window.a + 1 = undefined + 1 = NaN
 // Nothing happens to foo.a; it remains 0.
+// window.a is NaN at the end.
+
+// Fix 1: Use `apply`
 let foo = {
   a: 0,
   incrementA() {
-    const increment = function () {
+    function increment() {
       this.a += 1;
-    }.bind(this);
+    }
 
-    increment();
+    increment.apply(this);
   },
 };
 
@@ -119,9 +149,9 @@ let foo2 = {
       this.a += 1;
     }.bind(this);
 
-    increment.apply(this);
-    increment.apply(this);
-    increment.apply(this);
+    increment();
+    increment();
+    increment();
   },
 };
 

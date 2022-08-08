@@ -8,6 +8,7 @@ function foo() {
 }
 
 foo.bind(obj);
+// Logs nothing.
 // Returns new function that references original function `foo` and is
 // permanently bound to execution context `obj`.
 
@@ -45,7 +46,7 @@ console.log(negativeMentality.logMessage()); // 'JavaScript makes sense!'
 // bar2 is a function that executes foo2 using positiveMentality as the EC.
 // Even if negativeMentality has bar2 as a method, invoking it using
 // negativeMentality as an explicit caller will not replace positiveMentality
-// as the EC.
+// as the EC. bind is permanent.
 
 // 5
 let obj5 = {
