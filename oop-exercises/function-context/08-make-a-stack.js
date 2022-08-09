@@ -1,4 +1,5 @@
 function newStack() {
+  // Private data closed over by push, pop, and printStack
   const stack = [];
 
   return {

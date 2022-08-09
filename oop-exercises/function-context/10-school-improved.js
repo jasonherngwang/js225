@@ -40,6 +40,7 @@ function createStudent(name, year) {
 let school = (() => {
   const students = [];
   const ALLOWED_YEARS = ['1st', '2nd', '3rd', '4th', '5th'];
+
   return {
     addStudent(name, year) {
       if (ALLOWED_YEARS.includes(year)) {

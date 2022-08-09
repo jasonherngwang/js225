@@ -1,4 +1,5 @@
 // Private scope
+// Doesn't pollute global scope
 (function (verb) {
   let cat = 'Paws';
   console.log(cat + ' ' + verb);
@@ -7,6 +8,7 @@
 // Private data
 // Return a function
 let catCount = (function () {
+  // Included in closure of returned anonymous function
   let numCats = 0;
 
   return function () {
@@ -20,6 +22,9 @@ console.log(catCount()); // 3
 
 // Return an object
 let myZoo = (function () {
+  // `animals` and `isUnique` included in closures of methods in returned
+  // object.
+  // Cannot access private data directly, e.g. via myZoo.animals.
   let animals = [];
 
   function isUnique(newAnimal) {

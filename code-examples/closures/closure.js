@@ -1,6 +1,6 @@
 // Closure of function returned from higher-order function
 function func() {
-  let a = 0; // Included in closure of return function.
+  let a = 0; // Included in closure of returned function.
 
   return function () {
     // After reassignment, old value is eligible for GC.
@@ -9,12 +9,14 @@ function func() {
   };
 }
 
-let counter = func();
+// counter closes over private data `a`
 // `a` is inaccessible from outside the function.
+let counter = func();
 counter(); // 1
 counter(); // 2
 counter(); // 3
 
+// Closure of method in returned object
 // Example of closures being created at function definition, and not changeable
 // afterward.
 

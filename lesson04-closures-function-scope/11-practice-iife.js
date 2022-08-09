@@ -1,4 +1,4 @@
-// 1
+// 1-2
 // Won't execute. Need to use a function expression, not declaration.
 // function() {
 //   console.log("Sometimes, syntax isn't intuitive!")
@@ -8,7 +8,7 @@
 })();
 
 // 3
-// function sum hoisted to top. `var sum` re-declares the variable.
+// Function sum hoisted to top. `var sum` re-declares the variable.
 // During Execution phase, `sum` assigned to 0 and no longer references the
 // function, so invoking sum(numbers) throws an error: "sum is not a function".
 var sum = 0;
@@ -19,6 +19,7 @@ sum += 31;
 
 numbers = [1, 7, -3, 3];
 
+// Using IIFE prevents naming conflict.
 sum += (function sum(arr) {
   return arr.reduce(function (sum, number) {
     sum += number;

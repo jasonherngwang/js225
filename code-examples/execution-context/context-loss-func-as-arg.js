@@ -2,7 +2,7 @@
 let obj = {
   a: 1,
   func() {
-    // Pass callback
+    // Pass callback. `this` references global object.
     [1, 2, 3].forEach(function (num) {
       console.log(num + this.a);
     });
