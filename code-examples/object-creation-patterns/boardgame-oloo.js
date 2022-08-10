@@ -34,6 +34,13 @@ BoardGame.rollDice = function () {
   );
 };
 
+BoardGame.takeOut = () => console.log('Take board and pieces out of box.');
+BoardGame.brand = 'Hasbro';
+
+// Static methods and properties
+BoardGame.takeOut(); // Take board and pieces out of box.
+console.log(BoardGame.brand); // Hasbro
+
 let monopoly = Object.create(BoardGame);
 monopoly.init('Monopoly', 'try to win money', '19.99', '4');
 

@@ -1,6 +1,7 @@
 let Foo = function () {}; // Constructor function
 let obj = Foo.prototype; // `prototype` property possessed by all functions
 
+// Create instances using Foo; both inherit from Foo.prototype
 let bar = new Foo();
 let baz = new Foo();
 

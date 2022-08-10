@@ -6,11 +6,13 @@ Game.prototype.play = function () {
 };
 
 function IndoorGame(name, description, price) {
+  // Call superclass's constructor.
   Game.call(this, name);
   this.description = description;
   this.price = price;
 }
 IndoorGame.prototype = Object.create(Game.prototype);
+// Reassign constructor from Game to IndoorGame.
 IndoorGame.prototype.constructor = IndoorGame;
 
 IndoorGame.prototype.keepScore = function () {
@@ -29,6 +31,13 @@ BoardGame.prototype.rollDice = function () {
     `All of the ${this.numberOfPlayers} players roll dice to see who goes first`
   );
 };
+
+BoardGame.takeOut = () => console.log('Take board and pieces out of box.');
+BoardGame.brand = 'Hasbro';
+
+// Static methods and properties
+BoardGame.takeOut(); // Take board and pieces out of box.
+console.log(BoardGame.brand); // Hasbro
 
 let monopoly = new BoardGame('Monopoly', 'try to win money', '19.99', '4');
 

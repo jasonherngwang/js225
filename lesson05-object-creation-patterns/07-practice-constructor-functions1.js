@@ -20,26 +20,26 @@ function Foo() {
 // returned.
 foo = new Foo(); // 2
 
-// Invoke method, with `foo` as the function execution context.
-// JS finds `bar` higher in the prototype chain, in Foo.prototype.
+// Invoke method, with `foo` as the implicit function execution context.
 foo.bar(); // 2
 
-// This function invocation implicitly sets `this` to global object.
+// This function invocation implicitly sets `this` to global object,
+// window or global.
 // Sets properties `a` and `bar` as properties of global object (non-strict)
 Foo(); // 2
 
 // Object literal syntax. Uses Object.prototype as the prototype object.
 obj = {};
 // Explicitly set `obj` as function execution context.
-// Sets properties `a` and `bar` on `obj`.
+// Sets properties `a` and `bar` on `obj`. Calls `bar()`.
 Foo.call(obj); // 2
 obj.bar(); // 2
 
-// `this` references global object. Previously we already set property `a` on
-// the global object.
+// When invoking Foo() w/o `new`, we set property `global.a` (Node) or
+// `window.a` (browser).
 console.log(global.a); // 2
-// Node.js wraps files inside a function, so `this` references module.exports
-// Foo.call(this);
+// Node.js wraps files inside a function, so `this` references module.exports,
+// not `global`. In the browser, this is the same as `window.a`.
 console.log(this.a); // undefined
 
 // 2
@@ -70,16 +70,18 @@ function Rectangle(width, height) {
 // receiver, but it doesn't have properties `width` or `height`. Therefore,
 // undefined * undefined and undefined + undefined both return NaN.
 let rect1 = new Rectangle(2, 3);
-console.log(rect1.area); // NaN
-console.log(rect1.perimeter); // NaN
+console.log(rect1.area); // NaN => 6
+console.log(rect1.perimeter); // NaN => 10
 
 // 3
 function Circle(radius) {
   this.radius = radius;
-  this.area = function () {
-    return Math.PI * Math.pow(this.radius, 2);
-  };
 }
+
+Circle.prototype.area = function () {
+  return Math.PI * Math.pow(this.radius, 2);
+};
+
 let a3 = new Circle(3);
 let b3 = new Circle(4);
 
@@ -106,7 +108,7 @@ Ninja.prototype.swingSword = function () {
 console.log(ninja.swingSword()); // true
 
 // 5
-// In problem 4, we added a new property `swingSword` to the object that served
+// In problem 4, we added a new method `swingSword` to the object that served
 // as both the function prototype of constructor function Ninja and as the
 // object prototype of `ninja`.
 // In this problem we don't mutate the object prototype of `ninja`, so the
@@ -151,14 +153,17 @@ console.log(ninjaB.swing().swung); // must log true
 
 // 7
 let ninjaA7 = (function () {
-  function Ninja7() {}
+  function Ninja7() {
+    this.name = 'Ninja';
+  }
   return new Ninja7();
 })();
 
-// create a ninjaB object
-// let ninjaAConstructor = Object.getPrototypeOf(ninjaA7).constructor;
-// let ninjaB7 = new ninjaAConstructor();
-
 let ninjaB7 = Object.create(Object.getPrototypeOf(ninjaA7));
+let ninjaB7FromConstructor = new ninjaA7.constructor();
 
 console.log(ninjaB7.constructor === ninjaA7.constructor); // should log true
+
+console.log(ninjaB7); // Ninja7 {}
+// Code inside constructor Ninja7 executes.
+console.log(ninjaB7FromConstructor); // Ninja7 { name: 'Ninja' }

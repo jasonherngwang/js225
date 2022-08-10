@@ -24,6 +24,7 @@ console.log(makeObj());
 // console.log(paymentTotal); // => 6800
 // console.log(remainingDue); // => 2700
 
+// Factory function: Every invoice instance has its own copy of all properties.
 function createInvoice(services = {}) {
   return {
     phone: services.phone || 3000,

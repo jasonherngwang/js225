@@ -13,16 +13,17 @@ function Triangle(a, b, c) {
 }
 
 Triangle.prototype = shape;
+Triangle.prototype.constructor = Triangle;
+
 Triangle.prototype.getPerimeter = function () {
   return this.a + this.b + this.c;
 };
-Triangle.prototype.constructor = Triangle;
 
 let t = new Triangle(3, 4, 5);
-console.log(t.constructor); // Triangle(a, b, c)
+console.log(t.constructor); // [Function: Triangle]
 console.log(shape.isPrototypeOf(t)); // true
 console.log(t.getPerimeter()); // 12
-console.log(t.getType()); // "triangle"
+console.log(t.getType()); // triangle
 
 // 2
 function User(first, last) {
@@ -49,13 +50,14 @@ console.log(user2.name); // => John Doe
 // 3
 function createObject(obj) {
   // let newObj = {};
-  // Object.setPrototypeOf(newObj, obj);
+  // Object.setPrototypeOf(newObj, obj); // SLOW!
   // return newObj;
 
   // Temporary constructor function
   function F() {}
   // Reassign prototype
   F.prototype = obj;
+  // New object inherits from `obj`.
   return new F();
 }
 
@@ -82,6 +84,13 @@ let bar4 = foo4.begetObject();
 console.log(foo4.isPrototypeOf(bar4)); // true
 
 // 5
+// We are not using `new`, so Person doesn't return `this`. Instead it returns
+// undefined. Therefore we can't directly return the result of `apply`.
+// We allow `apply` to mutate newObj first, then return newObj.
+// However, simply allow mutating will not capture any custom objects returned
+// from the constructor.
+// We need to implement the functionality of saving a custom return object from
+// the constructor, by checking the type of the return value.
 function neww(constructor, args) {
   let newObj = Object.create(constructor.prototype);
   let result = constructor.apply(newObj, args);

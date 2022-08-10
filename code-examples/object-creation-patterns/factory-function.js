@@ -1,4 +1,4 @@
-// Using function factory
+// Using factory function, AKA factory object creation pattern, object factory
 function makeCat(name, type, fed = false) {
   return {
     name,
@@ -15,6 +15,7 @@ function makeCat(name, type, fed = false) {
   };
 }
 
+// All instances have their own copy of `meow` and `feed`; no behavior sharing.
 let tabitha = makeCat('Tabitha', 'tabby cat');
 tabitha.meow();
 tabitha.feed();
@@ -25,7 +26,19 @@ let sammy = makeCat('Sammy', 'Siamese cat');
 sammy.meow();
 sammy.feed();
 
+// Inherits from Object.prototype. No way to tell it came from `makeCat`.
+console.log(typeof tabitha); // object
+console.log(Object.getPrototypeOf(tabitha)); // [Object: null prototype] {}
+console.log(Object.getPrototypeOf(tabitha) == Object.prototype); // true
+console.log(Object.prototype.isPrototypeOf(tabitha)); // true
+console.log(Object.getOwnPropertyNames(tabitha)); // [ 'name', 'type', 'fed', 'meow', 'feed' ]
+console.log(tabitha instanceof makeCat); // false
+console.log(tabitha instanceof Object); // true
+console.log(tabitha.constructor); // [Function: Object]
+console.log(Object.prototype.constructor); // [Function: Object]
+
 // Without function factory
+// Global scope is polluted with variables
 let bobName = 'Bob';
 let bobType = 'Bobcat';
 let bobFed = true;

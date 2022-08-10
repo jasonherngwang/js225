@@ -8,7 +8,9 @@
 //   return object;
 // }
 function getDefiningObject(object, propKey) {
+  // Take advantage of the fact that the prototype of Object.prototype is `null`
   if (!object) return object;
+
   return object.hasOwnProperty(propKey)
     ? object
     : getDefiningObject(Object.getPrototypeOf(object), propKey);
@@ -41,6 +43,7 @@ console.log(getDefiningObject(qux, 'e')); // => null
 function shallowCopy(object) {
   let copy = Object.create(Object.getPrototypeOf(object));
 
+  // for..in includes inherited properties; we only care about the object's own.
   for (let prop in object) {
     // if (object.hasOwnProperty(prop)) {
     if (Object.prototype.hasOwnProperty.call(object, prop)) {
@@ -69,9 +72,23 @@ console.log(baz2.hasOwnProperty('a')); // false
 console.log(baz2.hasOwnProperty('b')); // false
 
 // 3
-function extend(destination, ...sources) {
-  return Object.assign(destination, ...sources);
+function extend(destination) {
+  // Index 0 is `destination`.
+  for (let i = 1; i < arguments.length; i++) {
+    let sourceObj = arguments[i];
+    for (let prop in sourceObj) {
+      if (Object.prototype.hasOwnProperty.call(sourceObj, prop)) {
+        destination[prop] = sourceObj[prop];
+      }
+    }
+  }
+
+  return destination;
 }
+
+// function extend(destination, ...sources) {
+//   return Object.assign(destination, ...sources);
+// }
 
 let foo3 = {
   a: 0,
