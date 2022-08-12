@@ -16,33 +16,46 @@ calling object as an array of object names.
 //   return ancestorNames;
 // }
 
+// Iterative approach 2
+// Object.prototype.ancestors = function ancestors() {
+//   let result = [];
+//   let obj = Object.getPrototypeOf(this);
+
+//   while (Object.prototype.hasOwnProperty.call(obj, 'name')) {
+//     result.push(obj.name);
+//     obj = Object.getPrototypeOf(obj);
+//   }
+
+//   result.push('Object.prototype');
+//   return result;
+// }
+
 // Recursive
 // Object.prototype.ancestors = function ancestors() {
 //   const ancestor = Object.getPrototypeOf(this);
-  
+
 //   if (Object.prototype.hasOwnProperty.call(ancestor, 'name')) {
 //     return [ancestor.name].concat(ancestor.ancestors());
 //   }
-  
+
 //   return ['Object.prototype'];
 // }
 
 // Recursive; checks base case first
 Object.prototype.ancestors = function ancestors() {
   const ancestor = Object.getPrototypeOf(this);
-  
+
   // Base case
   if (!Object.prototype.hasOwnProperty.call(ancestor, 'name')) {
     return ['Object.prototype'];
   }
-  
+
   // Recursive call
   return [ancestor.name].concat(ancestor.ancestors());
-}
-
+};
 
 // name property added to make objects easier to identify
-const foo = {name: 'foo'};
+const foo = { name: 'foo' };
 const bar = Object.create(foo);
 bar.name = 'bar';
 const baz = Object.create(bar);
@@ -50,7 +63,7 @@ baz.name = 'baz';
 const qux = Object.create(baz);
 qux.name = 'qux';
 
-console.log(qux.ancestors());  // returns ['baz', 'bar', 'foo', 'Object.prototype']
-console.log(baz.ancestors());  // returns ['bar', 'foo', 'Object.prototype']
-console.log(bar.ancestors());  // returns ['foo', 'Object.prototype']
-console.log(foo.ancestors());  // returns ['Object.prototype']
+console.log(qux.ancestors()); // returns ['baz', 'bar', 'foo', 'Object.prototype']
+console.log(baz.ancestors()); // returns ['bar', 'foo', 'Object.prototype']
+console.log(bar.ancestors()); // returns ['foo', 'Object.prototype']
+console.log(foo.ancestors()); // returns ['Object.prototype']

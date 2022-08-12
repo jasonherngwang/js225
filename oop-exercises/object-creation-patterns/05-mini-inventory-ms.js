@@ -40,6 +40,8 @@ Class: Item
 Class: Reporter
 */
 
+// Use IIFE to create constructor function which uses closures for private
+// methods
 const ItemCreator = (() => {
   function hasSpaces(str) {
     return /\s+/g.test(str);
@@ -67,7 +69,7 @@ const ItemCreator = (() => {
     return (firstPart + secondPart).toUpperCase();
   }
 
-  // Constructor function to create item
+  // Constructor with explicit return value in case of validation failure
   return function (name, category, quantity) {
     if (validItemInfo(name, category, quantity)) {
       this.sku = createSKU(name, category);
@@ -80,62 +82,62 @@ const ItemCreator = (() => {
   };
 })();
 
-const ItemManager = (() => {
-  return {
-    items: [],
-    create(name, category, quantity) {
-      const item = new ItemCreator(name, category, quantity);
-      if (item.notValid) {
-        return false;
-      } else {
-        this.items.push(item);
-      }
-    },
-    getItemIndex(sku) {
-      return this.items.findIndex((item) => sku === item.sku);
-    },
-    update(sku, obj) {
-      let index = this.getItemIndex(sku);
-      if (index !== -1) Object.assign(this.items[index], obj);
-    },
-    delete(sku) {
-      let index = this.getItemIndex(sku);
-      if (index !== -1) this.items.splice(index, 1);
-    },
-    inStock() {
-      return this.items.filter(({ quantity }) => quantity > 0);
-    },
-    itemsInCategory(category) {
-      return this.items.filter((item) => item.category === category);
-    },
-  };
-})();
+// OLOO to create object prototype
+const ItemManager = {
+  items: [],
+  create(name, category, quantity) {
+    const item = new ItemCreator(name, category, quantity);
+    if (item.notValid) {
+      return false;
+    } else {
+      this.items.push(item);
+    }
+  },
+  getItemIndex(sku) {
+    return this.items.findIndex((item) => sku === item.sku);
+  },
+  update(sku, obj) {
+    let index = this.getItemIndex(sku);
+    if (index !== -1) Object.assign(this.items[index], obj);
+  },
+  delete(sku) {
+    let index = this.getItemIndex(sku);
+    if (index !== -1) this.items.splice(index, 1);
+  },
+  inStock() {
+    return this.items.filter(({ quantity }) => quantity > 0);
+  },
+  itemsInCategory(category) {
+    return this.items.filter((item) => item.category === category);
+  },
+};
 
-const ReportManager = (() => {
-  return {
-    init(itemManager) {
-      this.items = itemManager;
-    },
-    createReporter(sku) {
-      let item = this.items.items.filter((item) => sku === item.sku)[0];
-      return {
-        itemInfo() {
-          Object.entries(item).forEach(([key, val]) => {
-            console.log(`${key}: ${val}`);
-          });
-        },
-      };
-    },
-    reportInStock() {
-      console.log(
-        this.items
-          .inStock()
-          .map((item) => item.name)
-          .join(',')
-      );
-    },
-  };
-})();
+// OLOO to create object prototype
+const ReportManager = {
+  init(itemManager) {
+    this.items = itemManager;
+  },
+  createReporter(sku) {
+    // Variable `item` is closed over by itemInfo. Changes to `item` will be
+    // reflected everytime we invoke itemInfo.
+    let item = this.items.items.filter((item) => sku === item.sku)[0];
+    return {
+      itemInfo() {
+        Object.entries(item).forEach(([key, val]) => {
+          console.log(`${key}: ${val}`);
+        });
+      },
+    };
+  },
+  reportInStock() {
+    console.log(
+      this.items
+        .inStock()
+        .map((item) => item.name)
+        .join(',')
+    );
+  },
+};
 
 console.log(ItemManager.create('basket ball', 'sports', 0)); // valid item
 console.log(ItemManager.create('asd', 'sports', 0));

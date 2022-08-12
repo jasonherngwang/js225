@@ -24,7 +24,7 @@ function BoardGame(name, description, price, numberOfPlayers) {
   this.numberOfPlayers = numberOfPlayers;
 }
 BoardGame.prototype = Object.create(IndoorGame.prototype);
-BoardGame.prototype.contructor = BoardGame;
+BoardGame.prototype.constructor = BoardGame;
 
 BoardGame.prototype.rollDice = function () {
   console.log(

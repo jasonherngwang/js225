@@ -1,11 +1,11 @@
 /*
-Write a delegate function that can be used to delegate the behavior of a method 
-or function to another object's method. delegate takes a minimum of two 
-arguments: (1) the object and (2) name of the method on the object. 
-The remaining arguments, if any, are passed — as arguments — to the objects' 
+Write a delegate function that can be used to delegate the behavior of a method
+or function to another object's method. delegate takes a minimum of two
+arguments: (1) the object and (2) name of the method on the object.
+The remaining arguments, if any, are passed — as arguments — to the objects'
 method that it delegates to.
 
-Note that this is not the same as using bind. bind returns a new function, 
+Note that this is not the same as using bind. bind returns a new function,
 whereas delegate maintains the reference.
 
 Notes
@@ -17,8 +17,12 @@ Notes
   So we simply invoke the method of foo, with foo as the explicit receiver.
 */
 
-const delegate = (objToDelegateTo, methodName, ...args) =>
-  () => objToDelegateTo[methodName](...args);
+// Don't need to use `call` or `apply`. Dot and bracket notation implicitly
+// set FEC to `objToDelegateTo`.
+const delegate =
+  (objToDelegateTo, methodName, ...args) =>
+  () =>
+    objToDelegateTo[methodName](...args);
 
 const foo = {
   name: 'test',
@@ -31,8 +35,10 @@ const baz = {
   qux: delegate(foo, 'bar', 'hello'),
 };
 
-baz.qux();   // logs 'hello test';
+baz.qux(); // logs 'hello test';
 
-foo.bar = () => { console.log('changed'); };
+foo.bar = () => {
+  console.log('changed');
+};
 
-baz.qux();          // logs 'changed'
+baz.qux(); // logs 'changed'
